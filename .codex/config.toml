@@ -1,0 +1,9 @@
+# Asteriade: project-level Codex subagent defaults.
+# This file is loaded in trusted projects on supported Codex releases.
+# If the signed-in account cannot use gpt-6-luna, remove/comment the
+# default_subagent_model line and follow the fallback rules in AGENTS.md.
+
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 3
+default_subagent_model = "gpt-6-luna"
