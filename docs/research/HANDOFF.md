@@ -7,8 +7,8 @@
 ## 完了・進行中・未開始
 
 - 完了: 要件本文/添付とGitHub設計ブランチの同一性確認、3件の独立レビュー、Holdout監査/A-B-C条件/Prospective段階等の整合修正、v2設計5文書への更新。旧v1.1は `../archive/v1.1/` に保全。
-- 保存対象: 既存Go/SQLite/loopback API・UI・承認/復旧の基盤ソース、テスト、設定/スクリプト、今回の設計/原本。既存の設計ブランチの履歴を継承した開発ブランチへPushする。既定 `master` は更新せず、`main` は存在しない。
-- 次の増分: Stage 0Aの最小Spec envelope/凍結identity。まだ市場戦略言語、固定会計カーネル、DB研究schema、UI、Runner実行へは接続しない。
+- 保存対象: 既存Go/SQLite/loopback API・UI・承認/復旧の基盤ソース、テスト、設定/スクリプト、今回の設計/原本。既存の設計ブランチの履歴を継承した開発ブランチ `codex/investment-research-stage0` へPush済み（基準コミット `849c29f`）。既定 `master` は更新せず、`main` は存在しない。
+- 実装済み増分: Stage 0Aの最小Spec envelope/凍結identity library（`internal/research`）。検証結果と限界は [Stage 0A記録](STAGE0A_IDENTITY_2026-10-21.md)。市場戦略言語、固定会計カーネル、DB研究schema、UI、Runner実行へは未接続。
 - 未開始/未達: 旧BTC/OSS実コード評価、実市場データ取得、会計golden vectors、Holdout共通台帳、Windows実効Sandbox、実Codex/Reviewer接続、課金台帳、Stage 1自律研究。
 - Windows: ユーザー手元で後から検証する予定。クロスビルド成功はOS安全境界の証明ではない。Runnerは `unverified`、全能力false、start APIは拒否のまま。
 
@@ -25,4 +25,4 @@ Manager最終判断と独立Reviewerの最大2発言、必須科学/安全ゲー
 3. 次に既存engine比較、venue/feed調査、Windows否定試験を進め、各ゲートの未実施/blockedを合格へ置換しない。
 4. Stage 0全体の必要能力と会計/データ条件が実証されるまでStage 1を開放しない。課金・権限設定変更等の具体的な外部操作は対象ごとの許可が必要。
 
-古い `codex/windows-stage0-download` のZIPはv1.1基盤検証用であり、投資研究機能を含まない。短期リンクの保存だけで再現可能としない。実測結果は後続のStage 0A記録に追記する。
+古い `codex/windows-stage0-download` のZIPはv1.1基盤検証用であり、投資研究機能を含まない。短期リンクの保存だけで再現可能としない。Stage 0Aの最新実測はリンク先の記録を参照する。

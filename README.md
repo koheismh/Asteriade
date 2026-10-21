@@ -49,6 +49,8 @@ GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -o bin/asteriade.exe 
 - SQLite WAL、マイグレーション、原子的なイベント/outbox/操作キー保存、クラッシュ後の結果確認待ち表示。
 - 同じデータ領域の二重起動拒否と一貫したバックアップ。
 
+v2向けの最小Spec envelope/凍結identityは `internal/research` に独立libraryとして追加しました。まだUIや実行系には接続していません。[検証と限界](docs/research/STAGE0A_IDENTITY_2026-10-21.md)を参照してください。
+
 安全境界を検証した Worker、公式 Codex 接続、自律的な計画/ツール実行はまだありません。中断要求の記録はプロセス停止の実証ではありません。実行 API は常に拒否し、診断画面にも未検証理由を表示します。
 
 ## バックアップと復元

@@ -7,7 +7,7 @@
 
 本計画は [現行v2.0要件](REQUIREMENTS.md) と[レビュー判断](research/REQUIREMENTS_REVIEW_2026-10-21.md)に基づく。ユーザーの条件付き開発指示によりStage 0から進める。受領Draft 2原本は別途保全する。旧v1.1の実装計画は [アーカイブ](archive/v1.1/IMPLEMENTATION_PLAN.md) を参照する。
 
-既存のProject/Task/Execution、SQLite、event/outbox、冪等性、承認、停止・復旧、loopback UI/APIはlegacy substrateとして再利用候補である。研究固有機能、StrategySpec/freeze、market data、研究Runner、固定会計kernel、selection/Holdout registryは未実装。詳細は [STAGE0_STATUS.md](STAGE0_STATUS.md)。DB schema v1とmigration checksumは変更せず、研究schemaは追加migrationとする。既存UI/coreは研究機能があるものとして扱わない。
+既存のProject/Task/Execution、SQLite、event/outbox、冪等性、承認、停止・復旧、loopback UI/APIは旧汎用管理基盤として再利用候補である。最小Spec envelope/freeze identityを独立libraryとして実装した。市場研究の統合機能、market data、研究Runner、固定会計kernel、selection/Holdout registryは未実装。詳細は [STAGE0_STATUS.md](STAGE0_STATUS.md)。DB schema v1とmigration checksumは変更せず、研究schemaは追加migrationとする。既存UI/coreは研究機能があるものとして扱わない。
 
 ## 2. 依存順と現在の許可範囲
 
@@ -31,7 +31,7 @@ flowchart TD
 
 | Stage | 成果 | 現在の条件/停止範囲 |
 |---|---|---|
-| 0A | 合成データ上のSpec/freeze identity契約、manifest、参照試験設計 | 今開始可能。初期コードは未実装で、Push後に別担当が実装予定 |
+| 0A | 合成データ上のSpec/freeze identity契約、manifest、参照試験設計 | 最小envelope/freeze libraryを実装。科学/会計の参照試験、DB/Runner統合は未実施 |
 | 0B | 旧BTC研究/既存engine/OSSの比較表と再利用判断材料 | 既存資産は未アクセス・未検証。read-only調査と許可済み資料確認に限る |
 | 0C | 初期BTC現物の合法データと約定仕様、golden vectors | 市場種別は決定済み。venue/feed/timeframe/license/order semantics選択までは実市場データ使用・合否判定をしない |
 | 0D | Windows実効境界、synthetic Holdout proof、Stage 0統合ゲート | 実機未検証。Runnerの研究実行、Provider、外部データ、課金は開けない |
@@ -52,7 +52,7 @@ flowchart TD
 - 同一fixture/Spec/kernel/seedでの再現、未来時刻参照拒否、Run/manifestの改変検知、synthetic Holdout状態遷移の参照試験仕様。
 - A/B/Cの比較記録方式: A=Manager案のみ、機械診断を研究中のManagerへ返さない。B=同じ機械診断feedbackを返す。C=B+独立Reviewer。A/B/Cすべて同一の最終安全/科学ゲートを通す。比較結果を貯めるだけで、成績差の結論は出さない。
 
-この段階は契約・試験設計であり、初期のSpec/freezeコードは未実装。親が指定するPush後の別担当作業へ引き継ぐ。外部データ/Provider/API/課金や実験Runnerは呼ばない。
+最小Spec envelope/freeze libraryを実装した。[実装と検証記録](research/STAGE0A_IDENTITY_2026-10-21.md)を参照。残りの契約・参照試験・科学的検証・永続化は未実施。外部データ/Provider/API/課金や実験Runnerは呼ばない。
 
 ### 0B. 既存研究/engine再利用比較（未アクセス・未検証）
 
@@ -75,7 +75,7 @@ Stage 0Cの合格物は固定fixtureと期待値であり、「市場実運用�
 
 ## 4. Stage 1 — 1市場の自律研究MVP
 
-着手条件はStage 0 gate合格、Draft 2の正式採用、初期venue/data/license/order仕様の固定、公式Providerの現在の利用条件・認証・料金確認、Stage 1の個別承認。Providerが利用不能ならreview/runを捏造せず、許可済み代替またはblocked状態とする。
+着手条件はStage 0 gate合格、現行要件との整合確認、初期venue/data/license/order仕様の固定、公式Providerの現在の利用条件・認証・料金確認、Stage 1の個別承認。Providerが利用不能ならreview/runを捏造せず、許可済み代替またはblocked状態とする。
 
 受入フローは、1市場・1仮説で次を端から端まで追跡する。
 
@@ -101,7 +101,7 @@ EC2、スマホremote access、cloud DB、実取引、口座接続、資金移�
 
 ## 8. 要件受け入れ確認の対応
 
-全テストは現時点で未実施。Draft2 AT-01〜40を実装時に各Stageへ割当て、試験証跡を [STAGE0_STATUS.md](STAGE0_STATUS.md) またはStageごとのreportに記録する。
+以下の製品AT全体は未完了。現行要件 AT-01〜42を各Stageへ割当て、試験証跡を [STAGE0_STATUS.md](STAGE0_STATUS.md) またはStageごとのreportに記録する。
 
 | Stage | 主なAT | 主な合格証拠 |
 |---|---|---|

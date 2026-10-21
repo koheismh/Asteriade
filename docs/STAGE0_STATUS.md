@@ -1,4 +1,4 @@
-> 2026-10-21追記: 以下はv1.1基盤の実績記録。v2 Stage 0全体の合格ではない。現在の範囲は [要件レビュー](research/REQUIREMENTS_REVIEW_2026-10-21.md) と [実装計画](IMPLEMENTATION_PLAN.md) を参照。Windows境界は引き続き未検証。
+> 2026-10-21追記: 以下はv1.1基盤の実績記録。v2 Stage 0全体の合格ではない。最初のv2実装増分は [Stage 0A記録](research/STAGE0A_IDENTITY_2026-10-21.md)。現在の範囲は [要件レビュー](research/REQUIREMENTS_REVIEW_2026-10-21.md) と [実装計画](IMPLEMENTATION_PLAN.md) を参照。Windows境界は引き続き未検証。
 
 # Stage 0 基盤実装・検証状況
 

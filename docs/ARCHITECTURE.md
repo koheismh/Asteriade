@@ -7,7 +7,7 @@
 
 本書は [現行v2.0要件](REQUIREMENTS.md) の研究特化要件を設計へ写す。ユーザーの条件付き開発指示と[レビュー結果](research/REQUIREMENTS_REVIEW_2026-10-21.md)に基づき、Stage 0から開発を進める。受領Draft 2原本は別途保全する。旧v1.1向け設計は [アーカイブ](archive/v1.1/ARCHITECTURE.md) を参照する。v2への切替後、旧設計の汎用AI開発MVPを現行仕様として参照しない。
 
-Stage 0基盤の実装済み範囲と未達事項は [STAGE0_STATUS.md](STAGE0_STATUS.md) が事実の基準である。既存のGo core/store/API/UIは**legacy substrate**として再利用候補であり、研究機能が実装済みであることを意味しない。研究固有Spec/freeze、研究Run、Python/検証Runner、市場データ、固定検証カーネル、Holdout registryは未実装。現在のRunner能力は閉じられており、Windows実効境界も未検証である。
+Stage 0基盤の実装済み範囲と未達事項は [STAGE0_STATUS.md](STAGE0_STATUS.md) が事実の基準である。既存のGo core/store/API/UIは**旧汎用管理基盤**として再利用候補であり、研究機能が実装済みであることを意味しない。最小Spec envelope/freeze identityは独立libraryとして実装した。研究Run、Python/検証Runner、市場データ、固定検証カーネル、Holdout registryは未実装。現在のRunner能力は閉じられており、Windows実効境界も未検証である。
 
 ## 2. 設計原則と推奨構成
 
@@ -94,7 +94,7 @@ StrategySpecは許可されたSignal/Entry/Exit/Position/Sizing/Risk/Execution�
 
 凍結後のどの変更も新revision/Runとして記録する。候補集合と派生元のlineageをResearchProgram横断で保持し、多重選抜の母集団を後から復元できるようにする。Holdout registryはProjectを跨いだ同一期間・銘柄の利用と結果露出を識別する。
 
-**現在は合成fixtureによるSpec/freeze identityの契約と参照試験設計がStage 0Aの対象であり、初期コードは未実装。** 実装着手は親が指定した後続Stage 0作業で行う。
+**Stage 0Aの最初の増分として `internal/research` のSpec envelope/freeze identityを実装した。** 型付き入力の形式とハッシュ整合性のみを検査し、固定カーネル・データ本体の検査・DB保存・API/UI・Runnerには接続していない。[実装と検証記録](research/STAGE0A_IDENTITY_2026-10-21.md)を参照。
 
 ### 5.2 Verification Kernel
 
