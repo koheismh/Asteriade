@@ -32,7 +32,7 @@ flowchart TD
 | Stage | 成果 | 現在の条件/停止範囲 |
 |---|---|---|
 | 0A | 合成データ上のSpec/freeze identity契約、manifest、参照試験設計 | 最小envelope/freeze libraryを実装。科学/会計の参照試験、DB/Runner統合は未実施 |
-| 0B | 旧BTC研究/既存engine/OSSの比較表と再利用判断材料 | 既存資産は未アクセス・未検証。read-only調査と許可済み資料確認に限る |
+| 0B | 旧BTC研究/既存engine/OSSの比較表と再利用判断材料 | 調査・設計判断を完了。[比較報告](research/STAGE0B_REUSE_EVALUATION_2026-10-21.md)。コード移植、同条件の実行比較、Windows配布は未実施 |
 | 0C | 初期BTC現物の合法データと約定仕様、golden vectors | 市場種別は決定済み。venue/feed/timeframe/license/order semantics選択までは実市場データ使用・合否判定をしない |
 | 0D | Windows実効境界、synthetic Holdout proof、Stage 0統合ゲート | 実機未検証。Runnerの研究実行、Provider、外部データ、課金は開けない |
 | 1 | 1市場・1仮説の自律研究MVP | Stage 0合格と別途承認後のみ |
@@ -54,9 +54,9 @@ flowchart TD
 
 最小Spec envelope/freeze libraryを実装した。[実装と検証記録](research/STAGE0A_IDENTITY_2026-10-21.md)を参照。残りの契約・参照試験・科学的検証・永続化は未実施。外部データ/Provider/API/課金や実験Runnerは呼ばない。
 
-### 0B. 既存研究/engine再利用比較（未アクセス・未検証）
+### 0B. 既存研究/engine再利用比較（調査・設計判断を完了）
 
-旧quant-btc-lab、既存検証engine、候補OSSを、許可された範囲でread-only評価する。比較軸はライセンス、対応データ/注文、独立参照計算との一致、未来データ漏洩対策、データ境界、Windows配布依存、性能、保守コスト、改変可能性。評価用データは合成fixtureから始める。現時点で旧BTC研究資産にアクセスした/再利用可能と主張しない。秘密データの複製や外部uploadはしない。
+旧quant-btc-lab、既存検証engine、候補OSSを、許可された範囲でread-only評価する。比較軸はライセンス、対応データ/注文、独立参照計算との一致、未来データ漏洩対策、データ境界、Windows配布依存、性能、保守コスト、改変可能性。評価用データは合成fixtureから始める。2026-10-21にquant-btc-labの固定ソースとFreqtrade/Backtraderを調査し、部品分類、主要不具合と修正、独立正解試験、Stage 0C未決事項を記録した。旧実データ/数値artifactを取得せず、秘密データの複製や外部uploadも行っていない。結果は[比較報告](research/STAGE0B_REUSE_EVALUATION_2026-10-21.md)と[AI向け引き継ぎ](research/STAGE0B_HANDOFF.md)を参照。同条件のengine実行比較、ライセンス適合、Windows配布の実証は未完了で、AT-39やStage 0全体の全面合格を意味しない。
 
 ### 0C. 暗号資産現物の市場仕様とgolden vectors（部分blocked）
 
@@ -119,7 +119,7 @@ AT対応は導入段階の計画で、各試験の実測結果を別記する。
 
 1. 要件レビューと整合修正を完了し、ユーザー依頼に基づいてStage 0開発基準を採用した。受領原本の状態を過去の記録として保全する。
 2. 初期市場種別は暗号資産現物BTC等に決定済み。venue/feed/timeframe/license/order/fill semanticsは未決で、Stage 0Cの実データ・市場kernel合否は停止中。
-3. 旧BTC資産/既存engineの利用可否は未検証。比較調査の対象アクセス権、データの秘匿範囲を確認する。
+3. Stage 0Bのソース調査・設計比較は完了。旧BTC資産の部分再利用は権利/境界/golden確認待ち、Freqtradeは初期ランタイム非採用、Backtraderは独立比較器の予備候補。engine実測・Windows配布・ライセンス適合は未検証。
 4. Windows実機のSandbox、Worker identity、Holdout境界の試験は未達。標準ユーザー作業、管理者変更、外部接続は個別に範囲を定める。
 5. Python/Runner配布方式と公式Providerの利用条件・料金は未確定。外部Provider、データ取得、追加課金、AI-driven Runner実行は閉じる。
 6. 実験データや個人の投資額、口座・認証情報、秘密研究データをpublic docs/GitHubへ含めない。今回のソース/設計/添付の専用ブランチへのPushはユーザー依頼済み。将来の研究結果の公開や既定ブランチへのマージは別の範囲。
