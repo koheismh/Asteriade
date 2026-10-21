@@ -7,7 +7,7 @@
 
 本書は [現行v2.0要件](REQUIREMENTS.md) の研究特化要件を設計へ写す。ユーザーの条件付き開発指示と[レビュー結果](research/REQUIREMENTS_REVIEW_2026-10-21.md)に基づき、Stage 0から開発を進める。受領Draft 2原本は別途保全する。旧v1.1向け設計は [アーカイブ](archive/v1.1/ARCHITECTURE.md) を参照する。v2への切替後、旧設計の汎用AI開発MVPを現行仕様として参照しない。
 
-Stage 0基盤の実装済み範囲と未達事項は [STAGE0_STATUS.md](STAGE0_STATUS.md) が事実の基準である。既存のGo core/store/API/UIは**旧汎用管理基盤**として再利用候補であり、研究機能が実装済みであることを意味しない。最小Spec envelope/freeze identityは独立libraryとして実装した。研究Run、Python/検証Runner、市場データ、固定検証カーネル、Holdout registryは未実装。現在のRunner能力は閉じられており、Windows実効境界も未検証である。
+Stage 0基盤の実装済み範囲と未達事項は [STAGE0_STATUS.md](STAGE0_STATUS.md) が事実の基準である。既存のGo core/store/API/UIは**旧汎用管理基盤**として再利用候補であり、研究機能が実装済みであることを意味しない。最小Spec envelope/freeze identityは独立libraryとして実装した。研究Run、Python/検証Runner、市場データ、製品検証カーネル、Holdout registryは未実装。Stage 0Cの開発専用合成参照例は[検証記録](research/STAGE0C_SYNTHETIC_VALIDATION_2026-10-21.md)を参照し、製品Runnerとは区別する。現在のRunner能力は閉じられており、Windows実効境界も未検証である。
 
 ## 2. 設計原則と推奨構成
 
@@ -38,6 +38,8 @@ flowchart LR
 ```
 
 現状の実装は図の一部にあたるローカル管理/API/Store/停止・復旧の基盤だけで、Research Governor・Runner・Kernel・Registryは計画である。外部Provider、実市場データ取得、課金処理、Runner実行は引き続き閉じる。
+
+Stage 1Aは単一Manager＋機械ゲート、Stage 1Bで独立Reviewerを追加する。[段階化と先送り理由](research/MVP_SCOPE_REVISION_2026-10-21.md)を参照。両方式で凍結・安全/科学ゲート・費用制約を共通に強制し、1Aではレビューを`not_enabled_stage1a`と記録する。既存Go/SQLite/UIの全面変更はしない。
 
 ## 3. 境界と責務
 
@@ -78,7 +80,7 @@ Project → ResearchProgram → Hypothesis → ResearchCycle → Experiment → 
 | Evidence class | `exploratory / independent_historical / prospective`。優位性の有無とは別に記録 |
 | Holdout partition | `unseen / preflight / evaluation_active / inspected / defect_review / consumed / corrected_analysis / retired`。露出後に未使用へ戻さない |
 
-独立Reviewerは5段階討論のstep 2、必要時step 4のみで、再反論は最大1回。Manager最終判断でもdata leak、kernel欠陥、権限・予算ゲートは解除不可。Reviewerが欠ける場合は承認済み代替か`blocked_review`へ進める。
+Stage 1Aは`hypothesis → decision`へ進み、レビュー状態を適用外として記録する。Stage 1Bの独立Reviewerは5段階討論のstep 2、必要時step 4のみで、再反論は最大1回。Manager最終判断でもdata leak、kernel欠陥、権限・予算ゲートは解除不可。Reviewerが欠ける場合は承認済み代替か`blocked_review`へ進める。
 
 Pauseは新規claim抑制、interruptは実行中Runnerへの停止要求、cancelは研究サイクル停止として分離する。外部副作用/課金の成否が不明なら`outcome_unknown`にし、自動再送しない。Runの`succeeded`は実験の有効性や戦略の優位性を意味しない。
 
@@ -98,6 +100,8 @@ StrategySpecは許可されたSignal/Entry/Exit/Position/Sizing/Risk/Execution�
 
 ### 5.2 Verification Kernel
 
+今回の`reference/asteriade_synthetic`はPython標準ライブラリの開発専用参照例であり、時刻/long-only現物会計/曖昧性の独立正解確認だけを担う。アプリから呼び出さず、Spec/Runner/API/DBへ接続しない。StrategySpecは入力仕様、参照モジュールは信頼する固定ロジックとして分け、Specによるkernel差替え・コード評価機能を追加しない。時計の値はtoy fixtureであり、OSでデータ参照を隔離した証拠ではない。
+
 kernelは市場/商品別アダプターを持つversioned実装とし、少なくとも入力時刻、バー確定時刻、情報利用可能時刻、注文受付/約定時刻、同一足の曖昧な到達順序、手数料/spread/slippage/funding等、position/cash/margin、強制決済を明示する。標準化したイベント列を用い、同じmanifest・seedで再現可能にする。
 
 Kernelの参照結果は人工データと独立に計算したgolden vectorで照合する。各商品のtick/倍率/セッション等を共通値へ埋め込まない。市場・注文表現・許容差が未選定の間は、一般的な合否値を捏造しない。
@@ -113,6 +117,8 @@ Kernelの参照結果は人工データと独立に計算したgolden vectorで�
 ## 7. 保存、移行、配布
 
 現行SQLite migrationのchecksum・過去記録を変更しない。新しいresearch schemaは追加migrationとして導入し、旧Project等を自動でResearchProjectへ読み替えない。Run状態の並行・整合性制約はDB制約とStore transactionで強制する。データ/コード/成果物を別々にhashで識別し、raw market dataをDB本体や公開Gitへ無理に格納しない。
+
+Market KnowledgeはMarkdown/JSONの小さなカードと研究ID参照で保存する。[最小仕様](MARKET_KNOWLEDGE.md)に従い、損益レポートと市場知識・反証・未検証条件を関連付ける。知識検索DB/UIは後段とする。
 
 Go Control Plane/静的UI/SQLiteは単一EXEを目標とする。Python backtest engineは次からStage 0で比較する。
 

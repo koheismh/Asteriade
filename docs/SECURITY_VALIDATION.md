@@ -9,7 +9,7 @@
 
 現在の実装証跡は [STAGE0_STATUS.md](STAGE0_STATUS.md) の記録に限る。そこではローカル API の loopback 制限と SQLite の保存・復旧試験を報告している。一方、Runner は全能力 `false`・`unverified` で、起動 API は拒否する。Windows ACL、Job、Firewall/WFP、Codex 認証と子孫プロセスの分離は未検証である。Linux テスト、Windows クロスビルド、mock、モデルやCLIの readiness は、Windows サンドボックスや実市場会計の証明にしない。
 
-この Stage 0 の限定実装では、StrategySpec の最小スキーマと凍結 identity の保存・照合までを対象にできる。外部データ取得、Provider/AI 接続、ネットワーク送信、一般プロセス起動、バックテスト Runner 起動、アプリのGitHub送信、購入・課金は行わない。開発者による許可済みソース/文書のPushとは区別する。実注文、資金移動、口座変更、取引所・ブローカー連携、秘密鍵/API key の受け渡しは初期版に実装しない。
+このStage 0の限定実装は、既存StrategySpec/freezeに加えて開発専用の合成時刻・現物会計・失敗検査を対象にできる。Python標準ライブラリの参照例はアプリ/Runnerから未接続であり、OSによるデータ隔離や市場仕様の実証ではない。[実測と限界](research/STAGE0C_SYNTHETIC_VALIDATION_2026-10-21.md)を参照。外部データ取得、Provider/AI 接続、ネットワーク送信、一般プロセス起動、バックテスト Runner 起動、アプリのGitHub送信、購入・課金は行わない。開発者による許可済みソース/文書のPushとは区別する。実注文、資金移動、口座変更、取引所・ブローカー連携、秘密鍵/API key の受け渡しは初期版に実装しない。
 
 ## 2. 保護対象と fail closed 規則
 
@@ -42,7 +42,7 @@ Codex App Server の Windows backend、承認、認証、子プロセス、通�
 |---|---|---|
 | 現在の Stage 0 限定実装 | 最小 StrategySpec、freeze identity と SQLite 保存・照合。process start、Provider/AI、network、feed import、external write は不可。 | identity 変更や欠落を検出できない場合は凍結/再開を拒否。Runner は全能力 false のまま。 |
 | Stage 0 研究基盤の後続技術検証 | synthetic data、known-answer reference、会計/kernel テスト、候補/Holdout metadata、境界試験を検証計画として準備する。 | Stage 0の計画範囲であり、今回は最小Spec契約から開始する。各試験の前提と実行環境を整えてから進める。実市場データは対象 market/feed/timeframe と feed 条件・費用が確認されるまで取得しない。Windowsの実効境界未達なら Runner を閉じる。 |
-| Stage 1 研究 MVP | 1市場で有限の討論、凍結、検証、バックテスト、benchmark、記録。実取引なし。Prospective は凍結した仮想シグナルを手動/低負荷で追記記録し、状態を pending と表示可能。 | 必要profileのWindows試験と機械ゲートが合格するまで execution不可。Prospectiveが未完了でも MVP は `pending/inconclusive` を明示できるが、確認済みに昇格不可。 |
+| Stage 1A/1B 研究 MVP | 1Aは1市場・単一Manager・機械ゲート、1Bで有限討論を追加。共通で凍結、検証、バックテスト、benchmark、記録。実取引なし。Prospective は凍結した仮想シグナルを手動/低負荷で追記記録し、状態を pending と表示可能。 | 必要profileのWindows試験と機械ゲートが合格するまで execution不可。Prospectiveが未完了でも MVP は `pending/inconclusive` を明示できるが、確認済みに昇格不可。 |
 | Stage 2 | 自動Prospective追跡と完全な証拠昇格、研究横断の高度な診断・効率評価。 | 新たな実行経路、予算、データ利用を別途評価。前向き期間の短さを成功とみなさない。 |
 | `BLOCKED` | 診断・設計閲覧・既存のローカル保存だけ。 | 必須境界、データ来歴または許可状態が不明。model/tool/Runner execution 不可。 |
 | `VERIFIED(profile)` | 試験済みの特定 profile/capability のみ。 | 陽性・否定試験、実効設定、鮮度と証跡が揃う。別Windows版/構成への一般化不可。 |
@@ -58,7 +58,7 @@ Identity は StrategySpec schema/hash、code SHA、kernel/version/hash、synthet
 ## 6. 受け入れ試験
 
 以下は計画であり、Windows sandbox、Provider、market feed、研究 kernel の試験はまだ実施されていない。Stage 欄は実際の実行許可ではなく、依存を示す。
-今回の実装増分は最小 StrategySpec envelope と凍結 identity に限定する。残りの受入試験は未実施として `unrun` を維持し、Stage 0の計画に沿って順次進める。試験計画を実施済み証拠に読み替えない。実データ・課金・非公開情報の外部送信・権限設定変更にはそれぞれ具体的な前提/許可が必要。
+今回の実装増分はStage 0Cの小規模合成参照例に限定し、既存Spec envelope/freezeおよびRunner全能力falseを維持する。残りの受入試験は未実施として `unrun` を維持し、Stage 0の計画に沿って順次進める。試験計画を実施済み証拠に読み替えない。実データ・課金・非公開情報の外部送信・権限設定変更にはそれぞれ具体的な前提/許可が必要。
 
 | ID / Stage | 試験 | 合格条件 / 失敗時 |
 |---|---|---|
@@ -75,7 +75,7 @@ Identity は StrategySpec schema/hash、code SHA、kernel/version/hash、synthet
 | SV-11 / 0 market accounting | crypto spot のvenue/feed/timeframeが決定後、利用条件を確認した履歴でavailability time、欠損、修正、費用、約定を比較。 | 条件/許容誤差を事前に固定し、referenceとの差を説明。ユーザーがvenue/feed/timeframeを選ぶまで`blocked/unrun`。synthetic passを実市場会計passへ転用しない。 |
 | SV-12 / 1 benchmark | 研究前登録した基準戦略と同期間・同kernel・明示費用条件で比較。比較条件を結果確認後に差し替える。 | ベンチ未設定/比較不能を表示し、相対優位と断言しない。risk/cost/capital差を明示。最低1 benchmarkをStage1前に事前固定。 |
 | SV-13 / 1–2 Prospective | freeze後に生じるデータのシグナル/仮想約定、no-trade、欠損、停止、bug修正を追記。freeze前の過去期間を追加。 | 過去の遡及埋め込みはProspectiveでない。変更後は新identity、既存系列は汚染/修正扱い。Stage1は手動/低負荷記録と`pending`表示、Stage2で自動追跡/昇格。実注文なし。 |
-| SV-14 / 1–2 reviewer and benchmark comparison | A/B/C方式を同等課題・制約・data boundary・予算・試行数で比較。Reviewer初回に他Reviewer応答を混入、無限再反論、usage欠落を試す。 | Reviewerは最大2発言機会、機械ゲートは全方式で同じ。品質/欠陥検出/費用/時間を記録し、小標本・不一致条件では優劣を断言しない。model identityやSessionの分離を記録するが統計的独立を主張しない。高度な評価はStage2。 |
+| SV-14 / 1B–2 reviewer and benchmark comparison | A/B/C方式を同等課題・制約・data boundary・予算・試行数で比較。Reviewer初回に他Reviewer応答を混入、無限再反論、usage欠落を試す。 | Reviewerは最大2発言機会、機械ゲートは全方式で同じ。品質/欠陥検出/費用/時間を記録し、小標本・不一致条件では優劣を断言しない。model identityやSessionの分離を記録するが統計的独立を主張しない。高度な評価はStage2。 |
 | SV-15 / 0–2 cost | 未知の料金/usage、予約超過、provider価格変更、data fee不明、欠落usage、再送を投入。 | 不明額を0にせず、超過/未見積の新規有料実行を止め、project/experiment別に推定/予約/確定を区別。月3,000円は初期上限目標であり、provider側請求総額保証とは表示しない。 |
 | SV-16 / 0 Windows file boundary | (Windows実機ゲート後のみ) Workspace外、別Task、DB、secret storeへのread/write/delete、junction/symlink/reparse/ADS/UNC、競合renameをWorker/Codex子孫から試す。 | OS ACL/identity/handle boundaryで拒否し、陽性対照はWorkspace内のみ成功。fixture hash不変。失敗なら該当Runner能力を閉じる。 |
 | SV-17 / 0 Windows process boundary | (Windows試験構成を整えた後) child/grandchild、PowerShell/別exe、Job breakaway、startup assignment race、inherited handles、helper/service/COM/RPC、終了競合を試す。 | 不許可process/媒介操作を拒否し、未管理の子孫が残らない。Job membershipだけでsystem-mediated action拒否を代替しない。失敗ならprocess_execを無効化。 |
@@ -86,6 +86,7 @@ Identity は StrategySpec schema/hash、code SHA、kernel/version/hash、synthet
 
 ## 7. Stage Gate 判定
 
+- **段階化:** Stage 1Aは単一Manager＋機械ゲート、Stage 1Bで独立Reviewerを追加する。ゲートは同一で、Reviewerの未実装を許可/安全性の代替にしない。
 - **現在:** Runner は `BLOCKED/unverified`。実行開始 API の拒否を維持。現行の loopback/SQLite 証跡をWindows sandboxの証拠へ拡張しない。
 - **限定 Spec 段階:** StrategySpec/frozen identityのローカル保存テストだけを行い、Provider、AI、data feed、ネットワーク、Runner/process、order capabilityを追加しない。
 - **Windows境界未達:** 一般 process起動、バックテスト、外部通信、Holdout評価を許可しない。承認画面や人の監督だけで合格にしない。

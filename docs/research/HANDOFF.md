@@ -1,29 +1,33 @@
 # Asteriade 現在地と引き継ぎ
 
-更新: 2026-10-21。方向: Windows 11ローカルの自律AI投資研究。**実注文なし。現在はStage 0Bの調査・設計判断を完了し、報告段階で停止。Stage 0Cは未着手。**
+更新: 2026-10-21。方向: Windows 11ローカルの自律AI投資研究。**現在はStage 0Cの小規模合成参照増分まで完了し、報告で停止。Stage 0全体は未合格、Stage 1A/1B未着手。実注文なし。**
 
-開発基準は [REQUIREMENTS.md](../REQUIREMENTS.md)。受領Draft 2と判断記録は `inputs/` に原本保存。[レビューと整合修正](REQUIREMENTS_REVIEW_2026-10-21.md)で、ユーザー依頼に基づくStage 0開始と未決ゲートを記録した。
+開発基準は[REQUIREMENTS.md](../REQUIREMENTS.md)。今回の専用ブランチは `codex/lean-mvp-synthetic-stage0c`、開始元はfetch済み `codex/investment-research-stage0` の `f721104b6adc6880e6d4bd8671cf78bc4aa5ff6c`。masterへマージしていない。PR #2は参照のみで、マージ/クローズしない。受領Draft 2/判断原本と過去記録は保全する。
 
-## 完了・進行中・未開始
+## 完了した範囲
 
-- 完了: 要件本文/添付とGitHub設計ブランチの同一性確認、3件の独立レビュー、Holdout監査/A-B-C条件/Prospective段階等の整合修正、v2設計5文書への更新。旧v1.1は `../archive/v1.1/` に保全。
-- 保存対象: 既存Go/SQLite/loopback API・UI・承認/復旧の基盤ソース、テスト、設定/スクリプト、今回の設計/原本。既存の設計ブランチの履歴を継承した開発ブランチ `codex/investment-research-stage0` へPush済み（基準コミット `849c29f`）。既定 `master` は更新せず、`main` は存在しない。
-- 実装済み増分: Stage 0Aの最小Spec envelope/凍結identity library（`internal/research`）。検証結果と限界は [Stage 0A記録](STAGE0A_IDENTITY_2026-10-21.md)。市場戦略言語、固定会計カーネル、DB研究schema、UI、Runner実行へは未接続。
-- Stage 0B完了: quant-btc-lab / Freqtrade / Backtraderの固定ソースを読み取り調査し、部品別再利用判断、主要不具合/修正、正解試験案、Stage 0C未決事項を記録。[比較報告](STAGE0B_REUSE_EVALUATION_2026-10-21.md)と[Stage 0B引き継ぎ](STAGE0B_HANDOFF.md)。
-- 未開始/未達: コード移植/engine実行比較、実市場データ取得、市場会計goldenの実行、Holdout共通台帳、Windows実効Sandbox、実Codex/Reviewer接続、課金台帳、Stage 1自律研究。
-- Windows: ユーザー手元で後から検証する予定。クロスビルド成功はOS安全境界の証明ではない。Runnerは `unverified`、全能力false、start APIは拒否のまま。
+- 旧Go/SQLite/loopback UI/API・承認・停止/復旧基盤を維持。Runnerは全能力false、unverified、start API拒否。
+- 0A: `internal/research`の最小Spec envelope/凍結identity。[記録](STAGE0A_IDENTITY_2026-10-21.md)。今回改変せず、製品RunnerやDB研究schemaへ未接続。
+- 0B: quant-btc-lab/Freqtrade/Backtraderの固定ソース調査・再利用判断。[比較報告](STAGE0B_REUSE_EVALUATION_2026-10-21.md)、[引き継ぎ](STAGE0B_HANDOFF.md)。実データ・旧成績・コードを移植していない。
+- 0C今回分: Python標準ライブラリの独立合成参照例。時刻/未来情報、現物会計、曖昧性/失敗拒否、独立oracle。**新規24テスト成功**、既存Go **40トップレベル/105サブテスト込み成功**。DD率履歴と売却fee不足の欠陥を独立テストで発見・修正。[実測と限界](STAGE0C_SYNTHETIC_VALIDATION_2026-10-21.md)、[実行手順](../../reference/README.md)。
+- PR2本文とユーザー指示を反映した[Stage 1A/1Bスコープ案](MVP_SCOPE_REVISION_2026-10-21.md)。1Aは単一Manager＋機械ゲート、1Bで既存有限討論を追加し品質/費用/時間比較。全42製品AT・費用/科学/安全ゲートを保持する。
+- [Market Knowledge最小仕様](../MARKET_KNOWLEDGE.md)。MD/JSON例は未実施研究の記入例であり、今回の合成会計テストや市場優位性の証拠ではない。
 
-## 確定と未決
+## 未完了と固定する境界
 
-初回優先市場はユーザー選択の**暗号資産現物（BTC等）**。venue/pair/feed/timeframe、利用規約/保管権、費用、約定範囲は未決。決まるまでは合成のみ。旧 `quant-btc-lab` の固定ソースは調査済み。部分再利用は権利/独立正解値/実行境界の確認待ちで、実データや旧成績の移植は行っていない。
+初回市場種別はユーザー選択の**暗号資産現物（BTC等）**。venue/pair/feed/timeframe、利用/保管/外部送信権、注文/費用/tick/lot/丸めprofileは未決。合成参照値を市場仕様へ流用しない。0C市場部分、engine同条件実行比較/配布、0D Holdout registry/Windows実効境界、Provider/研究loop/UI統合は未完了。
 
-Manager最終判断と独立Reviewerの最大2発言、必須科学/安全ゲート、事前benchmark、全候補/選抜系譜、Holdoutの露出・復元時の不確実性を保全する。個人金融情報、secret、非公開市場データを公開Git/外部AIへ送らない。無断の有料Providerへの切替は禁止。
+時計/会計は開発専用プリミティブで、将来値を物理的に隠すデータAPIやOS隔離は未実装。Pythonを製品Runnerとして採用した判断でもない。Go CP＋独立Python Runner、旧資産の権利確認後の部分再利用は比較候補として維持する。旧M6等の科学バグと消費済みHoldout修正を独立確認と呼べない点は0B記録を参照する。
 
-## 再開順序
+Managerは強制科学/安全/予算ゲートを解除できない。Stage 1Aは`review_status=not_enabled_stage1a`を明記し、割当済みReviewerの失敗を1A切替で回避しない。Stage 1BはReviewer発言最大2回、採否理由/最終判断を残す。全候補/選抜系譜/benchmark/Holdout露出を保全し、個人金融情報・secret・private raw dataは公開Git/外部AIへ送らない。
 
-1. [Stage 0B引き継ぎ](STAGE0B_HANDOFF.md)と[Stage 0C判断メモ](STAGE0C_DECISIONS.md)を読み、次のユーザー依頼の範囲を確認する。本作業では報告後に停止する。
-2. `source scripts/env.sh` で固定Goを使用し、意味のある変更に対応するテストと既存の必要チェックを実行する。
-3. 次段階では権利/venue/feed仕様を資料で確認し、人工の会計/時計oracleを固定、必要な方針を市場profileへ具体化する。未実施/blockedを合格へ置換しない。
-4. Stage 0全体の必要能力と会計/データ条件が実証されるまでStage 1を開放しない。課金・権限設定変更等の具体的な外部操作は対象ごとの許可が必要。
+## 再開順序と開始条件
 
-古い `codex/windows-stage0-download` のZIPはv1.1基盤検証用であり、投資研究機能を含まない。短期リンクの保存だけで再現可能としない。Stage 0Aの最新実測はリンク先の記録を参照する。
+1. 今回の差分と[検証記録](STAGE0C_SYNTHETIC_VALIDATION_2026-10-21.md)、[実装計画](../IMPLEMENTATION_PLAN.md)、[0C市場判断メモ](STAGE0C_DECISIONS.md)をレビューする。今回の許可範囲を超えて自動継続しない。
+2. 次の限定作業はvenue等の資料確認とprofileの独立golden計画。実市場データの取得/費用発生は別の許可を要する。
+3. ユーザー手元のWindows 11で必要な境界・Holdout・復旧否定試験を行う。クロスビルドや既存基盤検証スクリプト成功だけでSandboxを合格にしない。
+4. Stage 0全体の必要証拠・市場仕様・Provider利用条件/料金・明示的な開始許可が揃うまで1Aへ進まない。
+
+コード/設計コミット `8e55eed` を専用ブランチへPushし、remote head一致を確認済み。GitHub APIは環境ポリシーのCONNECT 403で拒否され、PR2追加コメント/レビュー状態は未取得。新PR作成コマンドもGraphQL接続のForbiddenで失敗し、PRは未作成。必要ホスト`api.github.com`の環境設定下書きを保存済みだが、保存は実行環境への反映ではない。[準備済みPR本文](STAGE0C_PR_DESCRIPTION.md)からbase/headを指定してレビュー用PRを作る。PushとPR作成の実結果を混同しない。
+
+`source scripts/env.sh`で固定Go、Python testは追加依存不要。古い配布ZIPはv1.1基盤検証版で投資研究機能を含まない。期限付きリンクだけを再現成果物と見なさない。

@@ -1,5 +1,7 @@
 > 2026-10-21追記: 以下はv1.1基盤の実績記録。v2 Stage 0全体の合格ではない。最初のv2実装増分は [Stage 0A記録](research/STAGE0A_IDENTITY_2026-10-21.md)。現在の範囲は [要件レビュー](research/REQUIREMENTS_REVIEW_2026-10-21.md) と [実装計画](IMPLEMENTATION_PLAN.md) を参照。Windows境界は引き続き未検証。
 
+> 後続増分: [Stage 0B調査](research/STAGE0B_REUSE_EVALUATION_2026-10-21.md)、[Stage 0C合成検証](research/STAGE0C_SYNTHETIC_VALIDATION_2026-10-21.md)、[Stage 1A/1B段階化案](research/MVP_SCOPE_REVISION_2026-10-21.md)を追加。以下は過去実績を保全する。Stage 0全体・Windows・製品Runnerは未合格。
+
 # Stage 0 基盤実装・検証状況
 
 更新日: 2026-10-20（Asia/Tokyo）。**Stage 0 の基盤を実装したが、安全ゲートは未達。Stage 1 は未着手。** Windows実機検証はユーザーの手元で後から行う。
