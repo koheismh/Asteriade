@@ -68,3 +68,13 @@ v2向けの最小Spec envelope/凍結identityは `internal/research` に独立li
 ## Windows での引継ぎ（旧基盤の検証）
 
 [実機検証手順](docs/WINDOWS_VALIDATION.md) に従い、まず `scripts/verify-windows.ps1` で基盤テストとビルドを記録してください。成功しても OS による禁止操作の拒否を証明したことにはならず、Stage 1 の自律研究は開放しません。旧配布ZIPは研究機能を含まない基盤検証版です。
+
+## 合成参照検証（開発専用）
+
+Python 3.12の標準ライブラリだけで、時刻・現物会計・失敗条件を検査できます。アプリ起動には不要で、研究Runnerには接続していません。
+
+```bash
+PYTHONPATH=reference PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s reference/tests -v
+```
+
+[参照例の仕様とWindows用コマンド](reference/README.md)、[Stage 0C実測と限界](docs/research/STAGE0C_SYNTHETIC_VALIDATION_2026-10-21.md)、[Stage 1A/1B段階化案](docs/research/MVP_SCOPE_REVISION_2026-10-21.md)、[Market Knowledge](docs/MARKET_KNOWLEDGE.md)を参照してください。Windows安全ゲートと実市場仕様は未検証です。

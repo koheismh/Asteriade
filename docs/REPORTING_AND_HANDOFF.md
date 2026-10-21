@@ -1,11 +1,13 @@
 # Asteriade 研究レポート・引き継ぎ設計案
 
 - 状態: **設計案。レポート生成・GitHub送信は未実装**
-- 初期対象: 外部接続なし・合成データのみのStage 0A。実市場データ、個人の資金情報、認証情報は含めない。
+- 初期対象: 外部接続なし・合成データのみのStage 0（今回の参照例は0C）。実市場データ、個人の資金情報、認証情報は含めない。
 - 公開先: 初期GitHubリポジトリはpublicとして扱い、明示allowlistに入った内容だけを送信対象にする。
 - 初期の仮想試験では個人資金値を入力せず、合成/正規化した資本だけを使う。
 
 本書はMarkdown/JSONの研究レポート、セッション間の引き継ぎ、外部送信時の公開範囲を定める。添付文書や会話に書かれた情報を暗黙にGitへ転載しない。研究・報告の実行結果は実際に生成され、検証された後だけ「完了」と記録する。
+
+Market Knowledgeは[最小カード仕様](MARKET_KNOWLEDGE.md)に従い、Markdown/JSON共通IDで研究レポートを参照する。現象・想定機構・反証・否定条件・未検証・次仮説を残す。今回のJSONは説明用であり、記載した反証試験は未実施。
 
 ## 1. 研究記録の共通原則
 
@@ -23,7 +25,7 @@
 - `record_id`, `schema_version`, 作成/更新UTC時刻、record revision、visibility classification。
 - Product/requirements version、Project/ResearchProgram/Hypothesis/Cycle/Experiment/Run IDs。
 - 仮説、因果説明、反証条件、優先順位の根拠と不確実性。
-- Manager/Reviewer role、Reviewer別blind sessionのID、レビュー論点/回答/再反論/最終判断。
+- Manager roleと判断。Stage 1Aは`review_status=not_enabled_stage1a`と空のレビュー配列を記録し、完了を捏造しない。Stage 1BではReviewer role、blind Session ID、論点/回答/再反論/最終判断も保存。
 - Decision、未解決点、次の具体的行動、停止理由と解除条件。
 - frozen manifest ID/hash、StrategySpec hash、kernel/build identity、code/config/seed。
 - Market/instrument/timeframe/period、dataset IDsとpartition role、source/license/retention status。
@@ -88,7 +90,7 @@ Markdownは人間に、JSONは機械処理と照合に使う。双方に同じ`r
 - 正式なrequirementsの所在・version・承認状態。Draftと採用済みの区別。
 - 現在のStage/承認範囲、着手済み/未着手/停止/blockedの状態。
 - ユーザーが確定した製品判断と、未決の製品判断。
-- 現在のmarket/data scopeと許可範囲。Stage 0Aではsynthetic-only、実データvenue/feed/timeframe未確定を明示。
+- 現在のmarket/data scopeと許可範囲。今回のStage 0Cではsynthetic-only、実データvenue/feed/timeframe未確定を明示。
 - 最後に完了した実作業と参照可能な証拠。未実施の検証を明記。
 - Frozen manifest/registryのIDと状態、Holdoutの露出/未知状態。
 - 有効なsandbox/provider/data permission profileと閉じている能力。
@@ -137,5 +139,5 @@ GitHubはpublic repository前提とする。専用branch/PRを基本とし、既
 - ユーザーが指定した最初の実データ優先対象は暗号資産現物（BTC等）。venue/feed/timeframeは未決定。
 - Stage 0Aはネットワーク外部接続なしのsynthetic-only。実市場data取得、実Provider送信、アプリからのGit操作、実験の成功主張はしない。開発者による許可済みソース/文書のPushとは区別する。
 - Stage 0Aの試験資本は合成/正規化値のみとし、個人の資金額・許容損失を入力しない。
-- Stage 1自律研究は未開放。prospectiveはStage 1で凍結manifestと手動記録契約、Stage 2で自動観測/昇格機能を追加する設計。
+- Stage 1A/1B自律研究は未開放。prospectiveはStage 1で凍結manifestと手動記録契約、Stage 2で自動観測/昇格機能を追加する設計。
 - private/raw data、個人資金、口座、secretを外部AI/GitHubへ送らない。許可が不明ならfail closed。
