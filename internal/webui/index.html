@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'self'; frame-ancestors 'none'">
+  <title>Asteriade — ローカル管理</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div><p class="eyebrow">LOCAL CONTROL PLANE</p><h1>Asteriade</h1></div>
+    <div class="stage-badge" aria-label="Stage 0、安全ゲート未達">Stage 0 <span>実行停止中</span></div>
+  </header>
+  <main>
+    <section class="safety panel" aria-labelledby="safety-title">
+      <div class="safety-mark" aria-hidden="true">!</div>
+      <div><h2 id="safety-title">安全ゲート: BLOCKED</h2>
+        <p>Windows 実機での禁止操作検証が未達です。自律実行は有効化されていません。この画面から実行を開始することはできません。</p>
+      </div>
+    </section>
+    <section class="panel diagnostics" aria-labelledby="diagnostics-title">
+      <div class="section-heading"><div><p class="eyebrow">ENVIRONMENT</p><h2 id="diagnostics-title">接続診断</h2></div><button id="refresh-button" class="button secondary" type="button">更新</button></div>
+      <div id="diagnostics" class="diagnostic-grid" aria-live="polite"><p class="muted">診断を読み込んでいます…</p></div>
+    </section>
+    <section class="panel" aria-labelledby="new-project-title">
+      <div class="section-heading"><div><p class="eyebrow">PROJECTS</p><h2 id="new-project-title">目標を保存</h2></div></div>
+      <form id="project-form" class="project-form">
+        <label>プロジェクト名<input name="title" required maxlength="120" autocomplete="off" placeholder="例: 月次レポートの作成"></label>
+        <label>目標<textarea name="goal" required rows="3" maxlength="10000" placeholder="達成したいこと、成果物、制約を入力"></textarea></label>
+        <button class="button primary" type="submit">目標を保存</button>
+        <p class="muted form-note">保存後は計画確認モードになります。保存だけで処理は開始されません。</p>
+      </form>
+    </section>
+    <section class="panel" aria-labelledby="projects-title">
+      <div class="section-heading"><div><p class="eyebrow">TRACKING</p><h2 id="projects-title">プロジェクト</h2></div><span id="project-count" class="muted"></span></div>
+      <div id="projects" class="project-list" aria-live="polite"><p class="muted">読み込み中…</p></div>
+    </section>
+    <section class="panel" aria-labelledby="approvals-title">
+      <div class="section-heading"><div><p class="eyebrow">REVIEW</p><h2 id="approvals-title">承認要求</h2></div></div>
+      <div id="approvals" class="stack" aria-live="polite"><p class="muted">読み込み中…</p></div>
+    </section>
+    <section class="panel" aria-labelledby="holds-title">
+      <div class="section-heading"><div><p class="eyebrow">SCHEDULER</p><h2 id="holds-title">一時停止</h2></div></div>
+      <form id="pause-form" class="pause-form">
+        <label>対象<select name="scope"><option value="global">全体</option><option value="project">プロジェクト</option></select></label>
+        <label>プロジェクト<select name="project_id" id="pause-project"><option value="">選択してください</option></select></label>
+        <button class="button secondary" type="submit">新規処理を一時停止</button>
+      </form>
+      <div id="holds" class="stack" aria-live="polite"><p class="muted">読み込み中…</p></div>
+    </section>
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+    <div id="fatal" class="fatal" role="alert" hidden></div>
+  </main>
+  <footer>ローカル管理画面 · Stage 0 · 外部への実操作は行いません</footer>
+</body>
+</html>
