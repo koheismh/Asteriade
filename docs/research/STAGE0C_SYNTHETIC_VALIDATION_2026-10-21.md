@@ -87,4 +87,4 @@ WindowsでのPython参照試験・EXE実行・実効Sandbox、製品データ参
 
 `gpt-6-luna`指定の3担当に、時計とfixture、現物会計とfixture、PR2採否/MK記録案を委任した。時計/会計は互いに読み取りレビューし、文書担当は親の要件/計画も確認。親が独立oracle・境界回帰・合成フローを追加し、欠陥を修正、重要判断・安全性の限界・全体整合・テスト実測を検証した。ツールはモデル指定を受理したが、実行基盤内部の独立したモデル証明は取得していない。有料の別APIへ切り替えていない。
 
-今回の保存対象は公開可能なソース/設計/合成例だけ。PR作成APIは環境ネットワークで拒否されたため、必要な`api.github.com`許可を環境設定の下書きへ保存した（未反映・未公開）。[PR本文](STAGE0C_PR_DESCRIPTION.md)を用意し、専用ブランチをレビュー対象とする。Pushと実PRの結果は作業完了時に区別して報告する。
+今回の保存対象は公開可能なソース/設計/合成例だけ。PR作成APIは環境ネットワークで拒否されたため、必要な`api.github.com`許可を環境設定の下書きへ保存した（未反映・未公開）。[PR本文](STAGE0C_PR_DESCRIPTION.md)を用意し、専用ブランチをレビュー対象とする。コード/設計コミット `8e55eedb96c0c8801643dffb9880d41d047af77b` を専用ブランチへPushし、remote head一致を確認した。base開発ブランチはf721104、masterは8b55314のまま。`gh pr create --draft --base codex/investment-research-stage0 --head codex/lean-mvp-synthetic-stage0c --body-file ...` は `Post https://api.github.com/graphql: Forbidden` で失敗し、実PRは未作成。通信許可の反映後、準備済み本文で作成する（次Stageの開始ではない）。

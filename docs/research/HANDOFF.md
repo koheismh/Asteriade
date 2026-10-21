@@ -28,6 +28,6 @@ Managerは強制科学/安全/予算ゲートを解除できない。Stage 1Aは
 3. ユーザー手元のWindows 11で必要な境界・Holdout・復旧否定試験を行う。クロスビルドや既存基盤検証スクリプト成功だけでSandboxを合格にしない。
 4. Stage 0全体の必要証拠・市場仕様・Provider利用条件/料金・明示的な開始許可が揃うまで1Aへ進まない。
 
-GitHub APIは環境ポリシーのCONNECT 403で拒否され、PR2追加コメント/レビュー状態と新PR作成は確認できていない。必要ホスト`api.github.com`の環境設定下書きを保存済みだが、保存は実行環境への反映ではない。[準備済みPR本文](STAGE0C_PR_DESCRIPTION.md)からbase/headを指定してレビュー用PRを作る。PushとPR作成の実結果を混同しない。
+コード/設計コミット `8e55eed` を専用ブランチへPushし、remote head一致を確認済み。GitHub APIは環境ポリシーのCONNECT 403で拒否され、PR2追加コメント/レビュー状態は未取得。新PR作成コマンドもGraphQL接続のForbiddenで失敗し、PRは未作成。必要ホスト`api.github.com`の環境設定下書きを保存済みだが、保存は実行環境への反映ではない。[準備済みPR本文](STAGE0C_PR_DESCRIPTION.md)からbase/headを指定してレビュー用PRを作る。PushとPR作成の実結果を混同しない。
 
 `source scripts/env.sh`で固定Go、Python testは追加依存不要。古い配布ZIPはv1.1基盤検証版で投資研究機能を含まない。期限付きリンクだけを再現成果物と見なさない。
